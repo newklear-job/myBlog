@@ -10,9 +10,11 @@
                     <div class="card-body">
                         <a class="float-right" href="{{ route('category.create') }}">Create Category</a>
                         @if (session('status'))
+                            <br>
                             <div class="alert alert-success">
                                 {{ session('status') }}
                             </div>
+
                         @endif
                         @foreach($categories as $category)
 

@@ -13,4 +13,8 @@ class Category extends Model
     public function children(){
         return $this->hasMany($this, 'parent_id', 'id');
     }
+
+    public function posts(){
+        return $this->belongsToMany('App\Post');
+    }
 }
