@@ -31,3 +31,7 @@ class CreateCategoriesTable extends Migration
         Schema::dropIfExists('categories');
     }
 }
+
+//TODO
+//name - unique
+//parent_id - not nullable, null = 0
