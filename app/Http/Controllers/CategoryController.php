@@ -59,8 +59,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        $categories = Category::orderBy('created_at')->paginate(5);
-        return view('categories.index', ['categories' => $categories]);
+        return view('categories.show', ['category' => $category]);
         //REDO(check if category is not deleted)!
     }
 

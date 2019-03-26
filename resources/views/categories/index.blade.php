@@ -20,15 +20,16 @@
 
 
                             <div>
-                                <h3><a href="{{route('category.edit', $category)}}">{{$category->name}}</a></h3>
+                                <h3><a href="{{route('category.show', $category)}}">{{$category->name}}</a></h3>
                                 <form onsubmit="if(confirm('Delete?')){return true;} else {return false;}" action="{{route('category.destroy', $category)}}" method="POST">
                                     @csrf
                                     @method('DELETE')
+                                    <a href="{{route('category.edit', $category)}}">Edit</a>
                                     <button class="btn" type="submit">Delete Category</button>
                                 </form>
                                 <p> Child categories:
                                     @forelse($category->children as $children)
-                                        <a href="{{route('category.edit', $children)}}">{{$children->name}}</a>
+                                        <a href="{{route('category.show', $children)}}">{{$children->name}}</a>
                                     @empty
                                         No child categories
                                     @endforelse

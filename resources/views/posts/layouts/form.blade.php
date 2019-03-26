@@ -13,8 +13,7 @@
 <label>body:</label>
 <input class="form-control" name="body" type="text" placeholder="enter body" value="{{$post->body ?? ''}}" required>
 <label>photo:</label>
-<input class="form-control" name="photo" type="text" placeholder="enter photo" value="{{$post->photo ?? ''}}">
-
+<input class="form-control-file" name="photo" type="file">
 <label for="">Select Categories:</label>
 <select class="form-control" name="categories[]" multiple>
     @include('posts.layouts.categoriesTree')

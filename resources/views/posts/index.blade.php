@@ -17,10 +17,15 @@
                         @endif
                         @foreach($posts as $post)
                             <div class="col card">
-                                <h3><a href="{{route('post.edit', $post)}}">{{$post->title}}</a></h3>
-                                <label for="">Photo:</label>
+                                <h3><a href="{{route('post.show', $post)}}">{{$post->title}}</a></h3>
+                                @if($post->photo)
+                                    <label for="">Photo:</label>
+                                    <img class="rounded-circle" width="200px" height="200px"
+                                         src="{{asset('storage/'.$post->photo) }}"
+                                         alt="This image is not available at the moment"/>
+                                @endif
                                 <p>Description: <br>
-                                {{ $post->body_excerpt }}
+                                    {{ $post->body_excerpt }}
                                 </p>
 
                                 <p>Post Categories:
@@ -33,6 +38,7 @@
                                       action="{{route('post.destroy', $post)}}" method="POST">
                                     @csrf
                                     @method('DELETE')
+                                    <a href="{{route('post.edit', $post)}}">Edit</a>
                                     <button class="btn" type="submit">Delete post</button>
                                 </form>
 

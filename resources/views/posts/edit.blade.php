@@ -8,7 +8,7 @@
                     <div class="card-header">Edit Post</div>
 
                     <div class="card-body">
-                        <form action="{{route('post.update', $post)}}" method="post">
+                        <form action="{{route('post.update', $post)}}" method="post" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             @include('posts.layouts.form')

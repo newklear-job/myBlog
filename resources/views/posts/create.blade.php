@@ -8,7 +8,7 @@
                     <div class="card-header">Create Post</div>
 
                     <div class="card-body">
-                        <form action="{{route('post.store')}}" method="post">
+                        <form action="{{route('post.store')}}" method="post" enctype="multipart/form-data">
                             @csrf
 
                             @include('posts.layouts.form')

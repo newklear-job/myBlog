@@ -36,4 +36,4 @@ class CreatePostsTable extends Migration
 }
 
 //TODO
-//column photo nullable
+//column photo nullable, default null

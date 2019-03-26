@@ -6,6 +6,7 @@ use App\Post;
 use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 use Debugbar;
 use Auth;
 
@@ -46,14 +47,22 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
             'title' => 'required|string|max:100|unique:posts',
             'body' => 'required|string',
-            'photo' => 'nullable|string'
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
         $post = new Post($request->all());
         $post->user_id = Auth::id();
+        if ($request->photo)
+        {
+            $photoName = $post->user_id.'_photo'.time().'.'.request()->photo->getClientOriginalExtension();
+            $request->photo->storeAs('photos', $photoName);
+            $post->photo = 'photos/'.$photoName;
+        }
+        else{  //DELETE WHEN photo default set to null
+            $post->photo = "";
+        }
         $post->save();
         if ($request->input('categories')) {
             $post->categories()->attach($request->input('categories'));
@@ -70,7 +79,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return view('posts.show', ['post'=>$post]);
     }
 
     /**
@@ -98,7 +107,7 @@ class PostController extends Controller
             'title' => [
                 'required',
                 'string',
-                'max:1',
+                'max:100',
                 Rule::unique('posts')->ignore($post->id)
             ],
             'body' => [
@@ -107,9 +116,12 @@ class PostController extends Controller
             ],
             'photo' => [
                 'nullable',
-                'string'
+                'image',
+                'mimes:jpeg,png,jpg,gif,svg',
+                'max:2048'
             ]
         ]);
+
         $post->categories()->detach();
         if ($request->input('categories')){
             $post->categories()->attach($request->input('categories'));
@@ -117,7 +129,13 @@ class PostController extends Controller
 
         $post->title = $request->title;
         $post->body = $request->body;
-        $post->photo = $request->photo;
+        if ($request->photo)
+        {
+            Storage::delete($post->photo);
+            $photoName = $post->user_id.'_photo'.time().'.'.request()->photo->getClientOriginalExtension();
+            $request->photo->storeAs('photos', $photoName);
+            $post->photo = 'photos/'.$photoName;
+        }
         $post->save();
         return redirect()->route('post.index')->with('status', 'Post updated successfully!');
     }
@@ -131,6 +149,10 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->categories()->detach();
+        if ($post->photo) {
+            Storage::delete($post->photo);
+        }
+
         $post->delete();
         return redirect()->route('post.index')->with('status', 'Post deleted successfully!');
     }
